@@ -1,12 +1,22 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { LayoutDashboard, FileText, Settings, LogOut, Globe } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { LayoutDashboard, FileText, Settings, LogOut, Globe, Image as ImageIcon } from 'lucide-react';
 
 export default function AdminLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    const pathname = usePathname();
+    const isLoginPage = pathname === '/wp-admin/login';
+
+    if (isLoginPage) {
+        return <>{children}</>;
+    }
+
     return (
         <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
             {/* Sidebar */}
@@ -27,13 +37,16 @@ export default function AdminLayout({
                 </div>
 
                 <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-                    <Link href="/admin" className="admin-nav-item">
+                    <Link href="/wp-admin" className="admin-nav-item">
                         <LayoutDashboard size={20} /> Dashboard
                     </Link>
-                    <Link href="/admin/pages" className="admin-nav-item">
+                    <Link href="/wp-admin/pages" className="admin-nav-item">
                         <FileText size={20} /> Pages
                     </Link>
-                    <Link href="/admin/settings" className="admin-nav-item">
+                    <Link href="/wp-admin/media" className="admin-nav-item">
+                        <ImageIcon size={20} /> Media
+                    </Link>
+                    <Link href="/wp-admin/settings" className="admin-nav-item">
                         <Settings size={20} /> Settings
                     </Link>
                 </nav>
@@ -53,23 +66,6 @@ export default function AdminLayout({
                 {children}
             </main>
 
-            <style jsx global>{`
-        .admin-nav-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.75rem 1rem;
-          color: #94a3b8;
-          text-decoration: none;
-          transition: all 0.2s;
-          border-radius: 8px;
-          font-weight: 500;
-        }
-        .admin-nav-item:hover {
-          color: white;
-          background-color: #334155;
-        }
-      `}</style>
         </div>
     );
 }

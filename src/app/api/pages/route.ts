@@ -42,3 +42,19 @@ export async function PUT(req: Request) {
         return NextResponse.json({ error: 'Failed to update page' }, { status: 500 });
     }
 }
+
+export async function DELETE(req: Request) {
+    try {
+        const body = await req.json();
+        const { id } = body;
+
+        await prisma.page.delete({
+            where: { id },
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting page:', error);
+        return NextResponse.json({ error: 'Failed to delete page' }, { status: 500 });
+    }
+}

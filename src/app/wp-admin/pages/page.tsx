@@ -1,7 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Plus, Edit2, Trash2, ExternalLink } from 'lucide-react';
+import { Plus, Edit2, ExternalLink } from 'lucide-react';
+import DeletePageButton from '@/components/admin/DeletePageButton';
 
 export default async function PagesIndex() {
     const pages = await prisma.page.findMany({
@@ -15,20 +16,20 @@ export default async function PagesIndex() {
                     <h1 style={{ fontSize: '1.875rem' }}>Pages</h1>
                     <p style={{ color: '#64748b' }}>Manage your website's pages and their content.</p>
                 </div>
-                <Link href="/admin/pages/new" className="btn btn-primary">
+                <Link href="/wp-admin/pages/new" className="btn btn-primary">
                     <Plus size={20} /> Create New Page
                 </Link>
             </div>
 
-            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="card shadow-lg" style={{ padding: 0, overflow: 'hidden', border: '1px solid hsl(var(--border))' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
-                        <tr style={{ backgroundColor: '#f1f5f9', textAlign: 'left' }}>
-                            <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Title</th>
-                            <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Slug</th>
-                            <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Status</th>
-                            <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0' }}>Last Updated</th>
-                            <th style={{ padding: '1rem', borderBottom: '1px solid #e2e8f0', textAlign: 'right' }}>Actions</th>
+                        <tr style={{ backgroundColor: 'hsl(var(--bg-main))', textAlign: 'left' }}>
+                            <th style={{ padding: '1.25rem 1rem', borderBottom: '1px solid hsl(var(--border))', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'hsl(var(--text-muted))' }}>Title</th>
+                            <th style={{ padding: '1.25rem 1rem', borderBottom: '1px solid hsl(var(--border))', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'hsl(var(--text-muted))' }}>Slug</th>
+                            <th style={{ padding: '1.25rem 1rem', borderBottom: '1px solid hsl(var(--border))', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'hsl(var(--text-muted))' }}>Status</th>
+                            <th style={{ padding: '1.25rem 1rem', borderBottom: '1px solid hsl(var(--border))', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'hsl(var(--text-muted))' }}>Last Updated</th>
+                            <th style={{ padding: '1.25rem 1rem', borderBottom: '1px solid hsl(var(--border))', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'hsl(var(--text-muted))', textAlign: 'right' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +40,7 @@ export default async function PagesIndex() {
                                 </td>
                             </tr>
                         ) : (
-                            pages.map((page) => (
+                            pages.map((page: any) => (
                                 <tr key={page.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
                                     <td style={{ padding: '1rem', fontWeight: 600 }}>{page.title}</td>
                                     <td style={{ padding: '1rem', color: '#64748b' }}>/{page.slug}</td>
@@ -62,12 +63,10 @@ export default async function PagesIndex() {
                                         <Link href={`/${page.slug}`} target="_blank" style={{ color: '#64748b' }}>
                                             <ExternalLink size={18} />
                                         </Link>
-                                        <Link href={`/admin/pages/edit/${page.id}`} style={{ color: '#6366f1' }}>
+                                        <Link href={`/wp-admin/pages/edit/${page.id}`} style={{ color: '#6366f1' }}>
                                             <Edit2 size={18} />
                                         </Link>
-                                        <button style={{ color: '#ef4444' }}>
-                                            <Trash2 size={18} />
-                                        </button>
+                                        <DeletePageButton id={page.id} title={page.title} />
                                     </td>
                                 </tr>
                             ))

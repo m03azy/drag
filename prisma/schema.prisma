@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -12,6 +13,8 @@ model User {
   email         String?   @unique
   password      String?
   role          String    @default("admin")
+  avatarUrl     String?
+  bio           String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -24,4 +27,17 @@ model Page {
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id             String   @id @default("global")
+  siteName       String   @default("My Business Site")
+  siteDesc       String?
+  logoUrl        String?
+  primaryColor   String   @default("#6366f1")
+  contactEmail   String?
+  homePageId     String?  // The slug of the page to use as the home page
+  globalHeader   String?  // JSON string representing the global navbar
+  globalFooter   String?  // JSON string representing the global footer
+  updatedAt      DateTime @updatedAt
 }

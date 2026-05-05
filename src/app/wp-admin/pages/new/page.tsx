@@ -8,7 +8,16 @@ import Link from 'next/link';
 export default function NewPage() {
     const [title, setTitle] = useState('');
     const [slug, setSlug] = useState('');
+    const [isSlugManual, setIsSlugManual] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const generateSlug = (val: string) => {
+        return val
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    };
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -28,7 +37,7 @@ export default function NewPage() {
 
             if (res.ok) {
                 const page = await res.json();
-                router.push(`/admin/pages/edit/${page.id}`);
+                router.push(`/wp-admin/pages/edit/${page.id}`);
             } else {
                 alert('Failed to create page');
             }
@@ -42,7 +51,7 @@ export default function NewPage() {
 
     return (
         <div className="animate-fade-in" style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <Link href="/admin/pages" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', marginBottom: '2rem' }}>
+            <Link href="/wp-admin/pages" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', marginBottom: '2rem' }}>
                 <ArrowLeft size={18} /> Back to Pages
             </Link>
 
@@ -57,7 +66,9 @@ export default function NewPage() {
                             value={title}
                             onChange={(e) => {
                                 setTitle(e.target.value);
-                                if (!slug) setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+                                if (!isSlugManual) {
+                                    setSlug(generateSlug(e.target.value));
+                                }
                             }}
                             placeholder="e.g. Home Page"
                             style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}
@@ -71,7 +82,10 @@ export default function NewPage() {
                                 type="text"
                                 required
                                 value={slug}
-                                onChange={(e) => setSlug(e.target.value)}
+                                onChange={(e) => {
+                                    setSlug(e.target.value);
+                                    setIsSlugManual(true);
+                                }}
                                 style={{ border: 'none', background: 'none', outline: 'none', color: '#0f172a', fontWeight: 500, flex: 1 }}
                             />
                         </div>
