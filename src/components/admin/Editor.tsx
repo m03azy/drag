@@ -1129,7 +1129,7 @@ function PropertyEditor({ component, onUpdate, onOpenPicker }: { component: CMSC
 
 function getDefaultProps(type: ComponentType) {
     switch (type) {
-        case 'hero': return { title: 'Design Your Future', subtitle: 'A revolutionary platform building the next generation of full-stack business tools.', ctaText: 'Get Started Today' };
+        case 'hero': return { title: 'Design Your Future', subtitle: 'A revolutionary platform building the next generation of full-stack business tools.', ctaText: '' };
         case 'heading': return { content: 'Heading Text', level: 'h2' };
         case 'text': return { content: 'Add your story here. This editor gives you full control over your content and how it appears to your customers.' };
         case 'image': return { url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426', alt: 'Dashboard mockup', overlayText: '', overlayColor: '#000000', overlayOpacity: 0.4 };

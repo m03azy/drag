@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { FileText, Users, MousePointer2, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminPanelDashboard() {
     const pageCount = await prisma.page.count();
     const latestPages = await prisma.page.findMany({
